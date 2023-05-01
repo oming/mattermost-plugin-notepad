@@ -18,6 +18,7 @@ import (
 // If you add non-reference types to your configuration struct, be sure to rewrite Clone as a deep
 // copy appropriate for your types.
 type configuration struct {
+	BookmarkContent string
 }
 
 // Clone shallow copies the configuration. Your implementation may require a deep copy if
@@ -31,6 +32,7 @@ func (c *configuration) Clone() *configuration {
 // concurrently. The active configuration may change underneath the client of this method, but
 // the struct returned by this API call is considered immutable.
 func (p *Plugin) getConfiguration() *configuration {
+	p.API.LogDebug("hsan", "getConfiguration", p.configuration)
 	p.configurationLock.RLock()
 	defer p.configurationLock.RUnlock()
 
