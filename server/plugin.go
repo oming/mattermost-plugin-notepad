@@ -44,7 +44,7 @@ func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Req
 	http.NotFound(w, r)
 }
 
-func (p *Plugin) handleBookmark(w http.ResponseWriter, r *http.Request) {
+func (p *Plugin) handleBookmark(w http.ResponseWriter, _ *http.Request) {
 	info := map[string]interface{}{
 		"bookmark": p.getConfiguration().BookmarkContent,
 	}

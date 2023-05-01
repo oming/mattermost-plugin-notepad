@@ -9,7 +9,7 @@ import (
 )
 
 // ExecuteCommand executes a given command and returns a command response.
-func (p *Plugin) ExecuteCommand(c *plugin.Context, args *model.CommandArgs) (*model.CommandResponse, *model.AppError) {
+func (p *Plugin) ExecuteCommand(_ *plugin.Context, args *model.CommandArgs) (*model.CommandResponse, *model.AppError) {
 	trigger := strings.TrimPrefix(strings.Fields(args.Command)[1], "/")
 	p.API.LogDebug("hsan", "trigger", trigger)
 
@@ -38,7 +38,6 @@ func (p *Plugin) executeCommandShow(args *model.CommandArgs) *model.CommandRespo
 		// },
 	})
 	return &model.CommandResponse{}
-
 }
 
 func getCommand() *model.Command {
