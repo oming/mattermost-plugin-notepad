@@ -1,11 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"],
-      "mattermost-redux/*": ["../node_modules/@mattermost/webapp/packages/mattermost-redux/src/*"],
-    },
+    "target": "es2019",
     "lib": [
       "dom",
       "dom.iterable",
@@ -22,13 +17,13 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "experimentalDecorators": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": "./src",
+    "typeRoots": [ "./src/types", "./node_modules/@types"],
   },
   "include": [
-    "src",
-    "tests"
+    "src"
   ],
   "exclude": [
     "dist",

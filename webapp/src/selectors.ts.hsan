@@ -1,0 +1,9 @@
+
+
+// import { GlobalState } from 'mattermost-redux/types/store';
+// import { id as pluginId } from './manifest';
+
+// //@ts-ignore GlobalState is not complete
+// const pluginState = (state: GlobalState) => state['plugins-' + pluginId] || {};
+
+// export const getBookmarkSettings = (state: GlobalState) => pluginState(state).bookmarkSettings;

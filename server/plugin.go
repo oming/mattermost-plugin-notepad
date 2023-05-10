@@ -21,7 +21,7 @@ type Plugin struct {
 	configuration *configuration
 
 	telemetryClient telemetry.Client
-	tracker         telemetry.Tracker
+	// tracker         telemetry.Tracker
 }
 
 // ServeHTTP demonstrates a plugin that handles HTTP requests by greeting the world.
