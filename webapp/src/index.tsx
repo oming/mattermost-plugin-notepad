@@ -13,7 +13,7 @@ import {getServerRoute} from './selectors';
 import reducer from './reducer';
 
 import BookmarkIcon from './components/icons/icons';
-import RHSView from './components/right_hand_sidebar/components';
+import RHSView from './components/right_hand_sidebar';
 
 export default class Plugin {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function

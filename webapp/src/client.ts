@@ -1,63 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable import/no-unresolved */
 import {Client4} from 'mattermost-redux/client';
 import {ClientError} from 'mattermost-redux/client/client4';
 
 import {id as pluginId} from './manifest';
-
-// export default class Client {
-//     constructor() {
-//         this.url = `/plugins/${pluginId}`;
-//     }
-
-//     getBookmarkSettings = async () => {
-//         return this.doGet(`${this.url}/bookmark`);
-//     };
-
-//     // saveMeetingSettings = async (meeting) => {
-//     //     return this.doPost(`${this.url}/settings`, meeting);
-//     // };
-
-//     doGet = async (url, headers = {}) => {
-//         return this.doFetch(url, {headers});
-//     };
-
-//     doPost = async (url, body, headers = {}) => {
-//         return this.doFetch(url, {
-//             method: 'POST',
-//             body: JSON.stringify(body),
-//             headers: {
-//                 ...headers,
-//                 'Content-Type': 'application/json',
-//             },
-//         });
-//     };
-
-//     doFetch = async (url, {method = 'GET', body = null, headers = {}}) => {
-//         const options = Client4.getOptions({
-//             method,
-//             body,
-//             headers: {
-//                 ...headers,
-//                 Accept: 'application/json',
-//             },
-//         });
-
-//         const response = await fetch(url, options);
-
-//         if (response.ok) {
-//             return response.json();
-//         }
-
-//         const data = await response.text();
-
-//         throw new ClientError(Client4.url, {
-//             message: data || '',
-//             status_code: response.status,
-//             url,
-//         });
-//     };
-// }
 
 class ClientClass {
     url = '';
@@ -70,8 +17,11 @@ class ClientClass {
         return this.doGet(`${this.url}/needsConnect`);
     };
 
-    getBookmark = async () => {
-        return this.doGet(`${this.url}/bookmark`);
+    getBookmark = async (channelId: string) => {
+        return this.doGet(`${this.url}/bookmark?channelId=${channelId}`);
+    };
+    saveBookmark = async (payload: any) => {
+        return this.doPost(`${this.url}/bookmark`, payload);
     };
 
     doGet = async (url: string, headers: {[key: string]: any} = {}) => {

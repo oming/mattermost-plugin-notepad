@@ -11,11 +11,12 @@ import (
 // ExecuteCommand executes a given command and returns a command response.
 func (p *Plugin) ExecuteCommand(_ *plugin.Context, args *model.CommandArgs) (*model.CommandResponse, *model.AppError) {
 	trigger := strings.TrimPrefix(strings.Fields(args.Command)[1], "/")
-	p.API.LogDebug("hsan", "trigger", trigger)
 
 	switch trigger {
-	case "show":
-		return p.executeCommandShow(args), nil
+	case "channel":
+		return p.executeCommandChannel(args), nil
+	case "common":
+		return p.executeCommandCommon(args), nil
 	default:
 		return &model.CommandResponse{
 			ResponseType: model.CommandResponseTypeEphemeral,
@@ -23,19 +24,21 @@ func (p *Plugin) ExecuteCommand(_ *plugin.Context, args *model.CommandArgs) (*mo
 		}, nil
 	}
 }
-func (p *Plugin) executeCommandShow(args *model.CommandArgs) *model.CommandResponse {
-	serverConfig := p.API.GetConfig()
-	configuration := p.getConfiguration()
-	p.API.LogDebug("hsan", "args", args)
-	p.API.LogDebug("hsan", "serverConfig", serverConfig)
-	p.API.LogDebug("hsan", "configuration", configuration)
+func (p *Plugin) executeCommandChannel(args *model.CommandArgs) *model.CommandResponse {
+	bookmark, _ := p.GetBookmark(args.ChannelId)
 
 	_ = p.API.SendEphemeralPost(args.UserId, &model.Post{
 		ChannelId: args.ChannelId,
-		Message:   configuration.BookmarkContent,
-		// Props: model.StringInterface{
-		// 	"type": "custom_demo_plugin_ephemeral",
-		// },
+		Message:   bookmark.BookmarkContent,
+	})
+	return &model.CommandResponse{}
+}
+func (p *Plugin) executeCommandCommon(args *model.CommandArgs) *model.CommandResponse {
+	configuration := p.getConfiguration()
+
+	_ = p.API.SendEphemeralPost(args.UserId, &model.Post{
+		ChannelId: args.ChannelId,
+		Message:   configuration.CommonBookmark,
 	})
 	return &model.CommandResponse{}
 }
@@ -44,17 +47,19 @@ func getCommand() *model.Command {
 	return &model.Command{
 		Trigger:          "bookmark",
 		DisplayName:      "Bookmark Bot",
-		Description:      "Interact with your Todo list.",
+		Description:      "Show Bookmark.",
 		AutoComplete:     true,
-		AutoCompleteDesc: "Available commands: show",
+		AutoCompleteDesc: "Available commands: channel, common",
 		AutoCompleteHint: "[command]",
 		AutocompleteData: getAutocompleteData(),
 	}
 }
 
 func getAutocompleteData() *model.AutocompleteData {
-	bookmark := model.NewAutocompleteData("bookmark", "[command]", "Available commands: show")
-	show := model.NewAutocompleteData("show", "", "Display Bookmark")
-	bookmark.AddCommand(show)
+	bookmark := model.NewAutocompleteData("bookmark", "[command]", "Available commands: channel, common")
+	channel := model.NewAutocompleteData("channel", "", "Display Channel Bookmark")
+	bookmark.AddCommand(channel)
+	common := model.NewAutocompleteData("common", "", "Display Common Bookmark")
+	bookmark.AddCommand(common)
 	return bookmark
 }

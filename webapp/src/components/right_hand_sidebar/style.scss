@@ -1,0 +1,38 @@
+.hsan-right-hand-sidebar-wrapper {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    // overflow: 'scroll';
+    overflow-y: scroll;
+    // background-color: rgb(69, 64, 57);
+
+    // height: 100vh;
+    // width: 100vh;
+
+    .hsan-header {
+        // background-color: burlywood;
+        height: 30px;
+        // border: red 1px solid;
+        // width: 100%;
+    }
+
+    .header-left {
+        float: left;
+    }
+
+    .header-right {
+
+    }
+
+    .hsan-body {
+        // background-color: rgb(245, 155, 194);
+        // border: red 1px solid;
+        overflow: scroll;
+    }
+
+    .body-contents {
+        // background-color: rgb(155, 245, 190);
+        // width: 100%;
+    }
+}
