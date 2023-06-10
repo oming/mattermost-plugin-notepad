@@ -38,39 +38,39 @@ func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Req
 	p.API.LogDebug("UserID: " + userID)
 
 	switch path := r.URL.Path; path {
-	case "/bookmark":
-		p.httpBookmarkSettings(w, r)
+	case "/notepad":
+		p.httpNotepadSettings(w, r)
 	default:
 		http.NotFound(w, r)
 	}
 }
-func (p *Plugin) httpBookmarkSettings(w http.ResponseWriter, r *http.Request) {
-	p.API.LogDebug("httpBookmarkSettings Start")
+func (p *Plugin) httpNotepadSettings(w http.ResponseWriter, r *http.Request) {
+	p.API.LogDebug("httpNotepadSettings Start")
 	switch r.Method {
 	case http.MethodPost:
-		p.httpBookmarkSaveSettings(w, r)
+		p.httpNotepadSaveSettings(w, r)
 	case http.MethodGet:
-		p.httpBookmarkGetSettings(w, r)
+		p.httpNotepadGetSettings(w, r)
 	default:
 		http.Error(w, "Request: "+r.Method+" is not allowed.", http.StatusMethodNotAllowed)
 	}
 }
 
-func (p *Plugin) httpBookmarkSaveSettings(w http.ResponseWriter, r *http.Request) {
-	p.API.LogDebug("httpBookmarkSaveSettings Start")
+func (p *Plugin) httpNotepadSaveSettings(w http.ResponseWriter, r *http.Request) {
+	p.API.LogDebug("httpNotepadSaveSettings Start")
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	var bookmark *Bookmark
-	if err = json.Unmarshal(body, &bookmark); err != nil {
+	var notepad *Notepad
+	if err = json.Unmarshal(body, &notepad); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	if err = p.SaveBookmark(bookmark); err != nil {
+	if err = p.SaveNotepad(notepad); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -82,8 +82,8 @@ func (p *Plugin) httpBookmarkSaveSettings(w http.ResponseWriter, r *http.Request
 	p.writeJSON(w, resp)
 }
 
-func (p *Plugin) httpBookmarkGetSettings(w http.ResponseWriter, r *http.Request) {
-	p.API.LogDebug("httpBookmarkGetSettings Start")
+func (p *Plugin) httpNotepadGetSettings(w http.ResponseWriter, r *http.Request) {
+	p.API.LogDebug("httpNotepadGetSettings Start")
 	channelID, ok := r.URL.Query()["channelId"]
 
 	if !ok || len(channelID[0]) < 1 {
@@ -92,18 +92,18 @@ func (p *Plugin) httpBookmarkGetSettings(w http.ResponseWriter, r *http.Request)
 	}
 	p.API.LogDebug("Channel ID " + channelID[0])
 
-	bookmark, err := p.GetBookmark(channelID[0])
-	p.API.LogDebug("bookmark 값 확인", bookmark)
+	notepad, err := p.GetNotepad(channelID[0])
+	p.API.LogDebug("notepad 값 확인", notepad)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	resp := ResponseBookmark{
-		ChannelID:       bookmark.ChannelID,
-		ChannelBookmark: bookmark.BookmarkContent,
-		CommonBookmark:  p.configuration.CommonBookmark,
+	resp := ResponseNotepad{
+		ChannelID:      notepad.ChannelID,
+		ChannelNotepad: notepad.NotepadContent,
+		CommonNotepad:  p.configuration.CommonNotepad,
 	}
 
 	p.writeJSON(w, resp)
@@ -138,8 +138,8 @@ func (p *Plugin) writeJSON(w http.ResponseWriter, v interface{}) {
 
 // See https://developers.mattermost.com/extend/plugins/server/reference/
 
-type ResponseBookmark struct {
-	ChannelID       string `json:"channelId"`
-	ChannelBookmark string `json:"channelBookmark"`
-	CommonBookmark  string `json:"commonBookmark"`
+type ResponseNotepad struct {
+	ChannelID      string `json:"channelId"`
+	ChannelNotepad string `json:"channelNotepad"`
+	CommonNotepad  string `json:"commonNotepad"`
 }

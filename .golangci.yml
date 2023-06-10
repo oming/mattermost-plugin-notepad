@@ -6,7 +6,7 @@ linters-settings:
   gofmt:
     simplify: true
   goimports:
-    local-prefixes: github.com/oming/mattermost-plugin-bookmark
+    local-prefixes: github.com/oming/mattermost-plugin-notepad
   govet:
     check-shadowing: true
     enable-all: true

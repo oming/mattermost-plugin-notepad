@@ -17,11 +17,11 @@ class ClientClass {
         return this.doGet(`${this.url}/needsConnect`);
     };
 
-    getBookmark = async (channelId: string) => {
-        return this.doGet(`${this.url}/bookmark?channelId=${channelId}`);
+    getNotepad = async (channelId: string) => {
+        return this.doGet(`${this.url}/notepad?channelId=${channelId}`);
     };
-    saveBookmark = async (payload: any) => {
-        return this.doPost(`${this.url}/bookmark`, payload);
+    saveNotepad = async (payload: any) => {
+        return this.doPost(`${this.url}/notepad`, payload);
     };
 
     doGet = async (url: string, headers: {[key: string]: any} = {}) => {

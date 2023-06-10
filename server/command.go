@@ -25,11 +25,11 @@ func (p *Plugin) ExecuteCommand(_ *plugin.Context, args *model.CommandArgs) (*mo
 	}
 }
 func (p *Plugin) executeCommandChannel(args *model.CommandArgs) *model.CommandResponse {
-	bookmark, _ := p.GetBookmark(args.ChannelId)
+	notepad, _ := p.GetNotepad(args.ChannelId)
 
 	_ = p.API.SendEphemeralPost(args.UserId, &model.Post{
 		ChannelId: args.ChannelId,
-		Message:   bookmark.BookmarkContent,
+		Message:   notepad.NotepadContent,
 	})
 	return &model.CommandResponse{}
 }
@@ -38,16 +38,16 @@ func (p *Plugin) executeCommandCommon(args *model.CommandArgs) *model.CommandRes
 
 	_ = p.API.SendEphemeralPost(args.UserId, &model.Post{
 		ChannelId: args.ChannelId,
-		Message:   configuration.CommonBookmark,
+		Message:   configuration.CommonNotepad,
 	})
 	return &model.CommandResponse{}
 }
 
 func getCommand() *model.Command {
 	return &model.Command{
-		Trigger:          "bookmark",
-		DisplayName:      "Bookmark Bot",
-		Description:      "Show Bookmark.",
+		Trigger:          "notepad",
+		DisplayName:      "Notepad Bot",
+		Description:      "Show Notepad.",
 		AutoComplete:     true,
 		AutoCompleteDesc: "Available commands: channel, common",
 		AutoCompleteHint: "[command]",
@@ -56,10 +56,10 @@ func getCommand() *model.Command {
 }
 
 func getAutocompleteData() *model.AutocompleteData {
-	bookmark := model.NewAutocompleteData("bookmark", "[command]", "Available commands: channel, common")
-	channel := model.NewAutocompleteData("channel", "", "Display Channel Bookmark")
-	bookmark.AddCommand(channel)
-	common := model.NewAutocompleteData("common", "", "Display Common Bookmark")
-	bookmark.AddCommand(common)
-	return bookmark
+	notepad := model.NewAutocompleteData("notepad", "[command]", "Available commands: channel, common")
+	channel := model.NewAutocompleteData("channel", "", "Display Channel Notepad")
+	notepad.AddCommand(channel)
+	common := model.NewAutocompleteData("common", "", "Display Common Notepad")
+	notepad.AddCommand(common)
+	return notepad
 }

@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-export default function BookmarkIcon() {
+export default function NotepadIcon() {
     return (
         <i
             className='icon fa fa-book'

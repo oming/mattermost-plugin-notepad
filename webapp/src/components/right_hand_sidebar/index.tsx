@@ -27,7 +27,7 @@ const RHSView = () => {
 
     useEffect(() => {
         if (currentChannelId) {
-            Client.getBookmark(currentChannelId).then((result) => {
+            Client.getNotepad(currentChannelId).then((result) => {
                 setResponse(result);
             });
         }

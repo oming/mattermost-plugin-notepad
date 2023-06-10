@@ -10,9 +10,7 @@ import Client from './client';
 import {PluginRegistry} from './types/mattermost-webapp';
 import {getServerRoute} from './selectors';
 
-import reducer from './reducer';
-
-import BookmarkIcon from './components/icons/icons';
+import NotepadIcon from './components/icons/icons';
 import RHSView from './components/right_hand_sidebar';
 
 export default class Plugin {
@@ -28,14 +26,14 @@ export default class Plugin {
 
         const {toggleRHSPlugin} = registry.registerRightHandSidebarComponent(
             RHSView,
-            'Bookmark',
+            'Notepad',
         );
 
         registry.registerChannelHeaderButtonAction(
-            <BookmarkIcon/>,
+            <NotepadIcon/>,
             () => store.dispatch(toggleRHSPlugin),
-            'Bookmark',
-            'View Bookmark',
+            'Notepad',
+            'View Notepad',
         );
     }
 

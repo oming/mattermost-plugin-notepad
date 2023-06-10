@@ -16,22 +16,22 @@ interface Props {
 
 const BodyComponents = ({response, selectBox}: Props) => {
     console.log('hsan body components rednering', response, selectBox);
-    const [value, setValue] = useState<string>(response.channelBookmark);
+    const [value, setValue] = useState<string>(response.channelNotepad);
     const [showEditButton, setShowEditButton] = useState<boolean>(selectBox === 'channel');
     const [editMode, setEditMode] = useState<boolean>(false);
 
     useEffect(() => {
         if (selectBox) {
             if (selectBox === 'channel') {
-                setValue(response.channelBookmark);
+                setValue(response.channelNotepad);
                 setShowEditButton(true);
             } else {
-                setValue(response.commonBookmark);
+                setValue(response.commonNotepad);
                 setShowEditButton(false);
             }
             setEditMode(false);
         }
-    }, [response.channelBookmark, response.commonBookmark, selectBox]);
+    }, [response.channelNotepad, response.commonNotepad, selectBox]);
 
     const handleValueChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         if (event) {
@@ -48,19 +48,19 @@ const BodyComponents = ({response, selectBox}: Props) => {
     const handleCancelClick = useCallback((event: React.MouseEvent<HTMLButtonElement> | undefined): void => {
         if (event) {
             setEditMode(false);
-            setValue(response.channelBookmark);
+            setValue(response.channelNotepad);
         }
-    }, [response.channelBookmark]);
+    }, [response.channelNotepad]);
 
     const handleSaveClick = useCallback((event: React.MouseEvent<HTMLButtonElement> | undefined): void => {
         if (event) {
             setEditMode(false);
             const payload: Request = {
                 channelId: response.channelId,
-                bookmark_content: value,
+                notepad_content: value,
             };
 
-            Client.saveBookmark(payload).then((result) => {
+            Client.saveNotepad(payload).then((result) => {
                 console.log('저장함: ', result);
             });
         }

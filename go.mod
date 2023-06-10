@@ -1,4 +1,4 @@
-module github.com/oming/mattermost-plugin-bookmark
+module github.com/oming/mattermost-plugin-notepad
 
 go 1.20
 
