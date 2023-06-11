@@ -39,7 +39,7 @@ const BodyComponents = ({response, selectBox}: Props) => {
         }
     }, []);
 
-    const handleModifyClick = useCallback((event: React.MouseEvent<HTMLButtonElement> | undefined): void => {
+    const handleModifyClick = useCallback((event: React.MouseEvent<HTMLSpanElement> | undefined): void => {
         if (event) {
             setEditMode(true);
         }
@@ -67,18 +67,23 @@ const BodyComponents = ({response, selectBox}: Props) => {
     }, [response.channelId, value]);
 
     return (
-        <div className='hsan-body'>
+        <div className='row remove-margin'>
             { showEditButton && (
-                <button
-                    type='button'
-                    onClick={handleModifyClick}
-                >{'수정'}</button>
+                <div className='pull-right'>
+                    <span
+                        className='glyphicon glyphicon-pencil'
+                        aria-hidden='true'
+                        data-toggle='tooltip'
+                        data-placement='left'
+                        title='수정'
+                        onClick={handleModifyClick}
+                    />
+                </div>
             ) }
             {editMode && (
-                <div
-                    className='body-contents'
-                >
+                <>
                     <TextareaAutosize
+                        className='form-control'
                         style={{
                             width: '100%',
                         }}
@@ -87,20 +92,25 @@ const BodyComponents = ({response, selectBox}: Props) => {
                         onChange={handleValueChange}
                     />
                     <hr/>
-                    <button
-                        type='button'
-                        onClick={handleCancelClick}
-                    >{'취소'}</button>
-                    <button
-                        type='button'
-                        onClick={handleSaveClick}
-                    >{'저장'}</button>
-                </div>
+                    <div className='row text-center remove-margin'>
+                        <button
+                            type='button'
+                            className='btn btn-secondary'
+                            onClick={handleCancelClick}
+                        >{'취소'}</button>
+                        <button
+                            type='button'
+                            className='btn btn-primary'
+                            onClick={handleSaveClick}
+                        >{'저장'}</button>
+
+                    </div>
+                </>
             )}
             {!editMode && (
-                <div className='body-contents'>
+                <>
                     {PostUtils.messageHtmlToComponent(PostUtils.formatText(value))}
-                </div>
+                </>
             )}
         </div>
     );

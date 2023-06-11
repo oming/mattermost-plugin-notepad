@@ -43,11 +43,9 @@ const RHSView = () => {
     }, [reload]);
 
     return (
-        <div
-            className='hsan-right-hand-sidebar-wrapper'
-        >
+        <div className='notepad container-fluid'>
             {response && (
-                <div>
+                <>
                     <HeaderComponents
                         handleSelectBoxChange={handleSelectBoxChange}
                         handleReloadClick={handleReloadClick}
@@ -58,7 +56,7 @@ const RHSView = () => {
                         response={response}
                     />
 
-                </div>
+                </>
             )}
         </div>
     );
