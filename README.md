@@ -11,6 +11,17 @@ Add a notepad to the Mattermost channel.
 - 채널 메모장 : 각 채널마다 채널에 맞는 정보를 추가합니다.
 - 공통 메모장 : 전체 채널에서 보여지는 메모장으로 플러그인 설정에서 설정합니다.
 
+## install
+
+플러그인을 사용하기 위해서 다음과 같이 작업합니다.
+
+1. Go the releases page and download the [latest release](https://github.com/oming/mattermost-plugin-notepad/releases).
+2. On your Mattermost, go to System Console -> Plugin Management and upload it.
+3. Configure plugin settings as desired.
+4. Start using the plugin!
+
+
+
 
 
 ## Usage
