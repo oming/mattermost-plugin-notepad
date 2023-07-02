@@ -75,7 +75,11 @@ func (p *Plugin) httpNotepadSaveSettings(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	orgNotepad, err := p.GetNotepad(notepad.ChannelID)
+	orgNotepad, err2 := p.GetNotepad(notepad.ChannelID)
+	if err2 != nil {
+		http.Error(w, err2.Error(), http.StatusBadRequest)
+		return
+	}
 
 	if err = p.SaveNotepad(notepad); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -87,13 +91,13 @@ func (p *Plugin) httpNotepadSaveSettings(w http.ResponseWriter, r *http.Request)
 			"```\n" +
 			"%s" +
 			"\n```"
-		_, err = p.API.CreatePost(&model.Post{
+		_, err3 := p.API.CreatePost(&model.Post{
 			UserId:    p.BotUserID,
 			ChannelId: notepad.ChannelID,
 			Message:   fmt.Sprintf(msg, diff),
 		})
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+		if err3 != nil {
+			http.Error(w, err3.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
