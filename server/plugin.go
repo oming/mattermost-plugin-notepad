@@ -2,11 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"sync"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/mattermost/mattermost-plugin-api/experimental/telemetry"
+	"github.com/mattermost/mattermost-server/v6/model"
 	"github.com/mattermost/mattermost-server/v6/plugin"
 )
 
@@ -23,6 +26,8 @@ type Plugin struct {
 
 	telemetryClient telemetry.Client
 	// tracker         telemetry.Tracker
+
+	BotUserID string
 }
 
 // ServeHTTP demonstrates a plugin that handles HTTP requests by greeting the world.
@@ -70,9 +75,27 @@ func (p *Plugin) httpNotepadSaveSettings(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	orgNotepad, err := p.GetNotepad(notepad.ChannelID)
+
 	if err = p.SaveNotepad(notepad); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+
+	if diff := cmp.Diff(orgNotepad.NotepadContent, notepad.NotepadContent); diff != "" {
+		msg := "**Notepad Updated... Diff (-origin, +new):**\n" +
+			"```\n" +
+			"%s" +
+			"\n```"
+		_, err = p.API.CreatePost(&model.Post{
+			UserId:    p.BotUserID,
+			ChannelId: notepad.ChannelID,
+			Message:   fmt.Sprintf(msg, diff),
+		})
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
 	resp := struct {
