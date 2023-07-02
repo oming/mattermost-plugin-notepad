@@ -15,7 +15,6 @@ interface Props {
 }
 
 const BodyComponents = ({response, selectBox}: Props) => {
-    console.log('hsan body components rednering', response, selectBox);
     const [value, setValue] = useState<string>(response.channelNotepad);
     const [showEditButton, setShowEditButton] = useState<boolean>(selectBox === 'channel');
     const [editMode, setEditMode] = useState<boolean>(false);

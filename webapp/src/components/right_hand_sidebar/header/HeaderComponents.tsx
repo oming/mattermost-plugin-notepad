@@ -12,8 +12,6 @@ const HeaderComponents = ({
     handleSelectBoxChange,
     handleReloadClick,
 }:Props) => {
-    console.log('hsan header components rednering');
-
     return (
         <div className='row remove-margin'>
             <div className='col-xs-8'>
