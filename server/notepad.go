@@ -10,22 +10,20 @@ type Notepad struct {
 }
 
 func (p *Plugin) GetNotepad(channelID string) (*Notepad, error) {
-	p.API.LogDebug("GetNotepad Start. channelID: " + channelID)
+	p.API.LogDebug("GetNotepad", "channelID", channelID)
 	notepadBytes, appErr := p.API.KVGet(channelID)
 	if appErr != nil {
-		p.API.LogError("KVGet Error. channelID: " + channelID)
+		p.API.LogError("KVget Error", "Error", appErr)
 		return nil, appErr
 	}
 
 	var notepad *Notepad
 	if notepadBytes != nil {
-		p.API.LogDebug("notepadBytes != nil")
 		if err := json.Unmarshal(notepadBytes, &notepad); err != nil {
-			p.API.LogDebug("notepadBytes error")
+			p.API.LogError(err.Error())
 			return nil, err
 		}
 	} else {
-		p.API.LogDebug("Return Default Values")
 		// Return a default value
 		channel, err := p.API.GetChannel(channelID)
 		if err != nil {
@@ -42,7 +40,7 @@ func (p *Plugin) GetNotepad(channelID string) (*Notepad, error) {
 }
 
 func (p *Plugin) SaveNotepad(notepad *Notepad) error {
-	p.API.LogDebug("SaveNotepad Start.", notepad)
+	p.API.LogDebug("SaveNotepad", "notepad", notepad)
 	jsonNotepad, err := json.Marshal(notepad)
 	if err != nil {
 		return err

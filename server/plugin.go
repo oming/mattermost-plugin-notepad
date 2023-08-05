@@ -86,9 +86,15 @@ func (p *Plugin) httpNotepadSaveSettings(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	userID := r.Header.Get("Mattermost-User-Id")
+	mmuser, _ := p.API.GetUser(userID)
+	username := mmuser.Username
+
 	if diff := cmp.Diff(orgNotepad.NotepadContent, notepad.NotepadContent); diff != "" {
-		msg := "**Notepad Updated... Diff (-origin, +new):**\n" +
-			"```\n" +
+		msg := "#### Notepad has been updated.\n"
+		msg += "Modifier @" + username + " Diff ( '-' = removed, '+' = added )\n\n"
+		msg += "---\n"
+		msg += "```\n" +
 			"%s" +
 			"\n```"
 		_, err3 := p.API.CreatePost(&model.Post{
