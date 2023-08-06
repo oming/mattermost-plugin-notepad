@@ -31,6 +31,50 @@
                 "help_text": "전체 채널에서 보여질 내용을 입력하세요. 내용은 Markdown 문법을 지원합니다.",
                 "placeholder": "",
                 "default": ""
+            },
+            {
+                "key": "RolesAllowedToEdit",
+                "display_name": "메모장 수정 권한",
+                "type": "radio",
+                "help_text": "채널의 메모장에 대한 수정 권한을 설정합니다.",
+                "placeholder": "",
+                "default": "system_admin",
+                "options": [
+                    {
+                        "display_name": "모든 사용자",
+                        "value": "users"
+                    },
+                    {
+                        "display_name": "채널 관리자",
+                        "value": "channel_admin"
+                    },
+                    {
+                        "display_name": "팀 관리자",
+                        "value": "team_admin"
+                    },
+                    {
+                        "display_name": "시스템 관리자",
+                        "value": "system_admin"
+                    }
+                ]
+            },
+            {
+                "key": "DisplayComponent",
+                "display_name": "메모장 표시 방법",
+                "type": "radio",
+                "help_text": "채널의 메모장 표시 방법을 설정합니다. 기본은 RightHandSidebar 입니다.",
+                "placeholder": "",
+                "default": "RightHandSidebar",
+                "options": [
+                    {
+                        "display_name": "우측 사이드바",
+                        "value": "RightHandSidebar"
+                    },
+                    {
+                        "display_name": "모달",
+                        "value": "RootModal"
+                    }
+                ]
             }
         ]
     }

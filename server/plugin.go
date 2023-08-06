@@ -43,12 +43,35 @@ func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Req
 	p.API.LogDebug("UserID: " + userID)
 
 	switch path := r.URL.Path; path {
+	case "/config":
+		p.httpGetConfig(w, r)
 	case "/notepad":
 		p.httpNotepadSettings(w, r)
 	default:
 		http.NotFound(w, r)
 	}
 }
+
+func (p *Plugin) httpGetConfig(w http.ResponseWriter, r *http.Request) {
+	p.API.LogDebug("httpGetConfig")
+
+	type config struct {
+		CommonNotepad      string `json:"common_notepad"`
+		DisplayComponent   string `json:"display_component"`
+		RolesAllowedToEdit string `json:"roles_allowed_to_edit"`
+	}
+
+	configuration := p.getConfiguration()
+
+	resp := config{
+		CommonNotepad:      configuration.CommonNotepad,
+		DisplayComponent:   configuration.DisplayComponent,
+		RolesAllowedToEdit: configuration.RolesAllowedToEdit,
+	}
+
+	p.writeJSON(w, resp)
+}
+
 func (p *Plugin) httpNotepadSettings(w http.ResponseWriter, r *http.Request) {
 	p.API.LogDebug("httpNotepadSettings Start")
 	switch r.Method {
@@ -89,6 +112,10 @@ func (p *Plugin) httpNotepadSaveSettings(w http.ResponseWriter, r *http.Request)
 	userID := r.Header.Get("Mattermost-User-Id")
 	mmuser, _ := p.API.GetUser(userID)
 	username := mmuser.Username
+	// mmuser.IsSystemAdmin()
+	// mmuser.IsInRole()
+	// mmChannel, _ := p.API.GetChannel(notepad.ChannelID)
+	// mmTeam, _ := p.API.GetTeam(mmChannel.TeamId)
 
 	if diff := cmp.Diff(orgNotepad.NotepadContent, notepad.NotepadContent); diff != "" {
 		msg := "#### Notepad has been updated.\n"

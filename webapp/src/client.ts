@@ -17,6 +17,10 @@ class ClientClass {
         return this.doGet(`${this.url}/needsConnect`);
     };
 
+    getConfiguration = async () => {
+        return this.doGet(`${this.url}/config`);
+    };
+
     getNotepad = async (channelId: string) => {
         return this.doGet(`${this.url}/notepad?channelId=${channelId}`);
     };

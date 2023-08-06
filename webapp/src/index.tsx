@@ -3,6 +3,8 @@ import {Store, Action} from 'redux';
 
 import {GlobalState} from 'mattermost-redux/types/store';
 
+import reducer from 'reducers';
+
 import manifest from './manifest';
 import Client from './client';
 
@@ -22,7 +24,15 @@ export default class Plugin {
         Client.setServerRoute(getServerRoute(store.getState()));
 
         // @see https://developers.mattermost.com/extend/plugins/webapp/reference/
-        // registry.registerReducer(reducer);
+        registry.registerReducer(reducer);
+
+        // store.dispatch()
+
+        Client.getConfiguration().then((result) => {
+            // setResponse(result);
+            // eslint-disable-next-line no-console
+            console.log(result);
+        });
 
         const {toggleRHSPlugin} = registry.registerRightHandSidebarComponent(
             RHSView,
